@@ -1,0 +1,32 @@
+1. Ekart-Account:
+    "http://localhost:8081/users"
+
+2. Ekart-Seller:
+    "http://localhost:8082/seller"
+
+3. Ekart-Product:
+    "http://localhost:8083/product"
+
+4. Ekart-Cart:
+    "http://localhost:8400/cart"
+
+5. Ekart-Address:
+    "http://localhost:8500/address"
+
+6. Ekart-Order:
+    "http://localhost:8086/order"
+
+7. Ekart-Wishlist:
+    "http://localhost:8700/wishlist"
+
+8. Ekart-CardInfo:
+    "http://localhost:8800/cardinfo"
+
+9. Ekart-Checkout:
+    "http://localhost:8900/checkout"
+
+10. Ekart-Notification:
+    "http://localhost:9000/notification"
+
+11. Ekart-Authentication:
+    "http://localhost:8091/auth"

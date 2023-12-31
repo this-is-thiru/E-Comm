@@ -1,0 +1,9 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: product-service
+  data:
+    mongodb:
+      uri: mongodb+srv://pthirumalayadav:y231hMNV3SCQ7X2m@product-service.cx7hnjk.mongodb.net/?retryWrites=true&w=majority
+      database: product-service

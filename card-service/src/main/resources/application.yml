@@ -1,0 +1,13 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: product-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://b3seta7lzl6ogb6wguoj-mysql.services.clever-cloud.com:3306/b3seta7lzl6ogb6wguoj
+    username: uemoco5xrfhkq6j4
+    password: tLgmEVjLuUAm0yxqkqp1
+  jpa:
+    hibernate:
+      ddl-auto: update
