@@ -1,12 +1,11 @@
 package com.mine.ecomm.inventoryservice.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.mine.ecomm.inventoryservice.entity.Inventory;
 
-public interface InventoryRepository extends JpaRepository<Inventory, Long> {
+import java.util.Optional;
 
-    List<Inventory> findBySkuCodeIn(final List<String> skuCodes);
+public interface InventoryRepository extends JpaRepository<Inventory, Long> {
+    Optional<Inventory> findBySkuCode(final String skuCode);
 }
