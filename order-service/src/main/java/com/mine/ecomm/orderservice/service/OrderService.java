@@ -1,27 +1,30 @@
 package com.mine.ecomm.orderservice.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.mine.ecomm.orderservice.dto.OrderDTO;
 import com.mine.ecomm.orderservice.dto.OrderStatus;
 import com.mine.ecomm.orderservice.entity.Order;
 import com.mine.ecomm.orderservice.exception.ServiceException;
 import com.mine.ecomm.orderservice.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
-    @Autowired
-    private RestTemplateProvider restTemplateProvider;
+    private final RestTemplateProvider restTemplateProvider;
 
     public List<OrderDTO> getAllBuyerOrders(final String buyerEmail) {
         List<OrderDTO> buyerOrders = new ArrayList<>();

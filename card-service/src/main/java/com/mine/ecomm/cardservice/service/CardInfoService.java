@@ -98,7 +98,6 @@ public class CardInfoService {
     private int performDoubleOperation(final String digitAsString) {
         int doubledDigit = Integer.parseInt(digitAsString) * 2;
         if (doubledDigit > 9) {
-            // TODO: To be write the logic here
             int temp = 0;
             while (doubledDigit > 0) {
                 temp += doubledDigit % 10;

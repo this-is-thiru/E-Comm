@@ -2,7 +2,7 @@ server:
   port: 8086
 spring:
   application:
-    name: product-service
+    name: order-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://b7t2cp5ktbmsw7svxild-mysql.services.clever-cloud.com:3306/b7t2cp5ktbmsw7svxild

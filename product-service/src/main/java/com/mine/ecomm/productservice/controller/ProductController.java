@@ -3,23 +3,23 @@ package com.mine.ecomm.productservice.controller;
 import java.io.IOException;
 import java.util.List;
 
-import com.mine.ecomm.productservice.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.mine.ecomm.productservice.dto.ProductDTO;
 import com.mine.ecomm.productservice.entity.Product;
+import com.mine.ecomm.productservice.service.ProductService;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/product")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
     @RequestMapping(value="/")
     public void redirect(HttpServletResponse response) throws IOException {

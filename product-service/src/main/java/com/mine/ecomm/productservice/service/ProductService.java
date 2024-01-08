@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mine.ecomm.productservice.dto.ProductDTO;
@@ -13,13 +12,16 @@ import com.mine.ecomm.productservice.entity.ProductPriceDetail;
 import com.mine.ecomm.productservice.repository.ProductPriceDetailRepo;
 import com.mine.ecomm.productservice.repository.ProductRepository;
 
-@Service
-public class ProductService {
-    @Autowired
-    private ProductRepository productRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-    @Autowired
-    private ProductPriceDetailRepo priceDetailRepository;
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class ProductService {
+    private final ProductRepository productRepository;
+
+    private final ProductPriceDetailRepo priceDetailRepository;
 
     /**
      * Add product.
