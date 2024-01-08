@@ -7,6 +7,9 @@
 3. Ekart-Product:
     "http://localhost:8083/product"
 
+x. Ekart-Inventory:
+    "http://localhost:8092/api/inventory"
+
 4. Ekart-Cart:
     "http://localhost:8400/cart"
 
