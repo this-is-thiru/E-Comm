@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api/product")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -33,7 +33,7 @@ public class ProductController {
      */
     @PostMapping("/add")
     public ResponseEntity<String> addProduct(final @RequestBody ProductDTO productDTO) {
-        productService.addProduct(productDTO);
+        productService.addNewProduct(productDTO);
         return new ResponseEntity<>("product added successfully.", HttpStatus.OK);
     }
 
@@ -59,6 +59,12 @@ public class ProductController {
     @GetMapping("/{productName}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable String productName) {
         final ProductDTO product = productService.getProduct(productName);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @GetMapping("/{productName}/{sellerEmail}")
+    public ResponseEntity<ProductDTO> getProductWithSeller(@PathVariable String productName, @PathVariable String sellerEmail) {
+        final ProductDTO product = productService.getProductWithSeller(productName,sellerEmail);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 }

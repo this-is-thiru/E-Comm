@@ -3,18 +3,11 @@ package com.mine.ecomm.productservice.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(value = "product_price_detail")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ProductPriceDetail {
-
-    /** The id. */
-    @Id
-    private String id;
+public class ProductSellerDetail {
 
     /** The Product name. */
     private double productPrice;
@@ -25,4 +18,5 @@ public class ProductPriceDetail {
     /** The Seller email. */
     private String sellerEmail;
 
+    private Long quantity;
 }

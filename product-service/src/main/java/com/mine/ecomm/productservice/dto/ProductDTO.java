@@ -3,7 +3,7 @@ package com.mine.ecomm.productservice.dto;
 import java.util.List;
 
 import com.mine.ecomm.productservice.entity.Product;
-import com.mine.ecomm.productservice.entity.ProductPriceDetail;
+import com.mine.ecomm.productservice.entity.ProductSellerDetail;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,7 +42,9 @@ public class ProductDTO {
     private String productId;
 
     /** The Price details. */
-    private List<ProductPriceDetail> priceDetails;
+    private List<ProductSellerDetail> priceDetails;
+
+    private Long quantity;
 
     /** The Categories. */
     private static final List<String> categories = List.of("mobile", "television", "camera", "headphone", "watch", "laptop");

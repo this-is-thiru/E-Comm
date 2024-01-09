@@ -2,10 +2,10 @@
     "http://localhost:8081/users"
 
 2. Ekart-Seller:
-    "http://localhost:8082/seller"
+    "http://localhost:8082/api/seller"
 
 3. Ekart-Product:
-    "http://localhost:8083/product"
+    "http://localhost:8083/api/product"
 
 x. Ekart-Inventory:
     "http://localhost:8092/api/inventory"
