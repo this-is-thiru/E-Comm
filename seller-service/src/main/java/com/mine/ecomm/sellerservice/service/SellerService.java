@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,21 +15,20 @@ import com.mine.ecomm.sellerservice.entity.SellerRating;
 import com.mine.ecomm.sellerservice.exception.MetadataException;
 import com.mine.ecomm.sellerservice.repository.SellerCatalogRepository;
 import com.mine.ecomm.sellerservice.repository.SellerRateRepository;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * The type Seller service.
  */
 @Service
+@RequiredArgsConstructor
 public class SellerService {
 
-    @Autowired
-    private SellerCatalogRepository sellerCatalogRepository;
-
-    @Autowired
-    private SellerRateRepository sellerRateRepository;
-
-    @Autowired
-    private RestTemplateProvider restTemplateProvider;
+    private final SellerCatalogRepository sellerCatalogRepository;
+    private final SellerRateRepository sellerRateRepository;
+    private final WebClient webClient;
+    private final RestTemplateProvider restTemplateProvider;
 
     /**
      * Add new product.
@@ -37,7 +37,6 @@ public class SellerService {
      */
     public String addNewProduct(final ProductDTO productDTO) {
         final Product entity = new Product();
-        entity.generateProductId(productDTO);
         entity.setProductName(productDTO.getProductName());
         entity.setProductPrice(productDTO.getProductPrice());
         entity.setDiscount(productDTO.getDiscount());
@@ -46,6 +45,13 @@ public class SellerService {
         entity.setDescription(productDTO.getDescription());
         entity.setSellerEmail(productDTO.getSellerEmail());
         sellerCatalogRepository.saveAndFlush(entity);
+
+        webClient.post()
+                .uri("http://localhost:8092/api/inventory")
+                .bodyValue(BodyInserters.fromValue(entity))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
         final ResponseEntity<String> response = restTemplateProvider.post(entity);
         if (response == null) {
