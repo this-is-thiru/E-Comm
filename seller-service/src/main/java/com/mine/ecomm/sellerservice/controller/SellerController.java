@@ -2,6 +2,8 @@ package com.mine.ecomm.sellerservice.controller;
 
 import java.util.List;
 
+import com.mine.ecomm.sellerservice.dto.SellerRateRequest;
+import com.mine.ecomm.sellerservice.dto.SellerRateResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +39,21 @@ public class SellerController {
         return new ResponseEntity<>(allProducts, HttpStatus.OK);
     }
 
-    @PostMapping("/rate/seller/{seller}")
-    public ResponseEntity<String> rateTheSeller(final @PathVariable String seller, final @RequestParam("rate") int rating) {
-        final String message = sellerService.rateTheSeller(seller, rating);
+    @PostMapping("/rate")
+    public ResponseEntity<String> rateTheSeller(final @RequestBody SellerRateRequest sellerRateRequest) {
+        final String message = sellerService.rateTheSeller(sellerRateRequest);
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping("/sellers-rating")
+    @ResponseStatus(HttpStatus.OK)
+    public List<SellerRateResponse> getAllSellersRating(final @RequestParam List<String> seller) {
+        return sellerService.getAllSellersRating(seller);
+    }
+
+    @GetMapping("/seller-rating")
+    @ResponseStatus(HttpStatus.OK)
+    public SellerRateResponse getSellerRating(final @RequestParam String seller) {
+        return sellerService.getSellerRating(seller);
     }
 }

@@ -4,5 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.mine.ecomm.sellerservice.entity.SellerRating;
 
+import java.util.List;
+
 public interface SellerRateRepository extends JpaRepository<SellerRating, String> {
+    List<SellerRating> findAllBySellerEmailIn(List<String> sellerEmails);
 }

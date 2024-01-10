@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mine.ecomm.sellerservice.dto.SellerRateRequest;
+import com.mine.ecomm.sellerservice.dto.SellerRateResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.mine.ecomm.sellerservice.dto.ProductDTO;
 import com.mine.ecomm.sellerservice.entity.Product;
@@ -15,8 +17,8 @@ import com.mine.ecomm.sellerservice.entity.SellerRating;
 import com.mine.ecomm.sellerservice.exception.MetadataException;
 import com.mine.ecomm.sellerservice.repository.SellerCatalogRepository;
 import com.mine.ecomm.sellerservice.repository.SellerRateRepository;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * The type Seller service.
@@ -101,27 +103,44 @@ public class SellerService {
         return allProducts;
     }
 
-    /**
-     * Gets sellers all products.
-     *
-     * @param sellerEmail the email
-     * @return the sellers all products
-     */
-    public String rateTheSeller(final String sellerEmail, final int rating) {
+    public String rateTheSeller(final SellerRateRequest sellerRateRequest) {
+        final String sellerEmail = sellerRateRequest.getSellerEmail();
         final Optional<SellerRating> optSellerRating = sellerRateRepository.findById(sellerEmail);
         if (optSellerRating.isEmpty()) {
             final SellerRating sellerRate = new SellerRating();
             sellerRate.setSellerEmail(sellerEmail);
-            sellerRate.setRating(rating);
+            sellerRate.setSellerName(sellerRateRequest.getSellerName());
+            sellerRate.setRating(sellerRateRequest.getRating());
             sellerRateRepository.saveAndFlush(sellerRate);
         } else {
             final SellerRating seller = optSellerRating.get();
-            float sellerRating = seller.getRating();
-            sellerRating = (sellerRating + rating) / 2;
-            seller.setRating(sellerRating);
+            float oldRating = seller.getRating();
+            final float newRating = (oldRating + sellerRateRequest.getRating()) / 2;
+            seller.setRating(newRating);
             sellerRateRepository.saveAndFlush(seller);
         }
         return "Rating successfully noted.";
+    }
+
+    public List<SellerRateResponse> getAllSellersRating(final List<String> sellerEmails) {
+        List<SellerRating> bySellerEmailIn = sellerRateRepository.findAllBySellerEmailIn(sellerEmails);
+        return sellerRateRepository.findAllBySellerEmailIn(sellerEmails).stream()
+                .map(this::createSellerRateResponse).toList();
+    }
+
+    public SellerRateResponse getSellerRating(final String sellerEmail) {
+        return sellerRateRepository.findById(sellerEmail).map(this::createSellerRateResponse).orElse(null);
+
+    }
+
+    private SellerRateResponse createSellerRateResponse(final SellerRating sellerRating) {
+        final SellerRateResponse sellerRateResponse = new SellerRateResponse();
+        sellerRateResponse.setRating(sellerRating.getRating());
+        sellerRateResponse.setSellerEmail(sellerRating.getSellerEmail());
+        sellerRateResponse.setSellerName(sellerRating.getSellerName());
+        final Integer deliveryCharge = sellerRating.getDeliveryCharge();
+        sellerRateResponse.setDeliveryCharge(deliveryCharge == null ? 0 : deliveryCharge);
+        return sellerRateResponse;
     }
 
 }
