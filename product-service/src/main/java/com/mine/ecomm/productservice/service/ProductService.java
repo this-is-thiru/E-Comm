@@ -2,12 +2,10 @@ package com.mine.ecomm.productservice.service;
 
 import java.util.*;
 
+import com.mine.ecomm.productservice.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mine.ecomm.productservice.dto.InventoryResponse;
-import com.mine.ecomm.productservice.dto.ProductRequest;
-import com.mine.ecomm.productservice.dto.ProductResponse;
 import com.mine.ecomm.productservice.entity.Product;
 import com.mine.ecomm.productservice.entity.ProductSellerDetail;
 import com.mine.ecomm.productservice.repository.ProductRepository;
@@ -15,12 +13,14 @@ import com.mine.ecomm.productservice.repository.ProductRepository;
 import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final WebClient webClient;
 
     /**
      * Add product.
@@ -107,6 +107,40 @@ public class ProductService {
     public ProductResponse getProductWithSeller(final String productName, final String sellerEmail) {
         final Optional<Product> optionalProduct = productRepository.findByProductNameAndSellerEmail(productName, sellerEmail);
         return optionalProduct.map(this::createProductResponse).orElse(null);
+    }
+
+    public List<SellerDetail> getAllSellersForProduct(final String skuCode) {
+        final Optional<Product> optionalProduct = productRepository.findBySkuCode(skuCode);
+        if (optionalProduct.isPresent()) {
+            final List<ProductSellerDetail> productSellerDetails = optionalProduct.get().getProductSellerDetails();
+            return productSellerDetails.stream().map(this::createSellerDetail).toList();
+        }
+        return Collections.emptyList();
+    }
+
+    private SellerDetail createSellerDetail(final ProductSellerDetail productSellerDetail) {
+        final SellerDetail sellerDetail = new SellerDetail();
+        sellerDetail.setProductPrice(productSellerDetail.getProductPrice());
+        sellerDetail.setDiscount(productSellerDetail.getDiscount());
+        sellerDetail.setEffectivePrice(productSellerDetail.getEffectivePrice());
+        final String sellerEmail = productSellerDetail.getSellerEmail();
+        sellerDetail.setSellerEmail(sellerEmail);
+
+        // Seller name and delivery charge and rating is fetched from seller service
+        final SellerRateResponse rateResponse = webClient.get()
+                .uri("http://localhost:8082/api/seller/seller-rating/{seller}", sellerEmail)
+                .retrieve()
+                .bodyToMono(SellerRateResponse.class)
+                .block();
+        if (rateResponse == null) {
+            return null;
+        }
+        sellerDetail.setRating(rateResponse.getRating());
+        sellerDetail.setDeliveryCharge(rateResponse.getDeliveryCharge());
+        sellerDetail.setSellerName(rateResponse.getSellerName());
+        sellerDetail.setDeliveryCharge(rateResponse.getDeliveryCharge());
+        sellerDetail.setRating(rateResponse.getRating());
+        return sellerDetail;
     }
 
     @Transactional(readOnly = true)

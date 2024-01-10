@@ -19,4 +19,6 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
     @Query("{'sku_code': {$in: ?0}}")
     List<Product> findBySkuCodes(List<String> skuCodes);
+
+    Optional<Product> findBySkuCode(String skuCode);
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.mine.ecomm.productservice.dto.InventoryResponse;
 import com.mine.ecomm.productservice.dto.ProductRequest;
 import com.mine.ecomm.productservice.dto.ProductResponse;
+import com.mine.ecomm.productservice.dto.SellerDetail;
 import com.mine.ecomm.productservice.entity.Product;
 import com.mine.ecomm.productservice.exception.ProductServiceException;
 import com.mine.ecomm.productservice.service.ProductService;
@@ -75,9 +76,15 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
+    @GetMapping("/sellers/{skuCode}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<SellerDetail> getAllSellersForProduct(final @PathVariable String skuCode) {
+        return productService.getAllSellersForProduct(skuCode);
+    }
+
     @GetMapping("/in-stock")
     @ResponseStatus(HttpStatus.OK)
-    public List<InventoryResponse> isInStock(final @RequestParam List<String> skuCodes) {
-        return productService.isInStock(skuCodes);
+    public List<InventoryResponse> isInStock(final @RequestParam List<String> skuCode) {
+        return productService.isInStock(skuCode);
     }
 }
