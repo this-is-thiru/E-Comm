@@ -3,7 +3,7 @@
   <component name="EclipseCodeFormatterProjectSettings">
     <option name="projectSpecificProfile">
       <ProjectSpecificProfile>
-        <option name="configType" value="JAVA_CONVENTIONS" />
+        <option name="configType" value="ECLIPSE_2_1" />
         <option name="formatter" value="ECLIPSE" />
       </ProjectSpecificProfile>
     </option>
