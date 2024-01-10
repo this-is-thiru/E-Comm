@@ -39,7 +39,7 @@ public class ProductDTO {
     private String sellerEmail;
 
     /** The Product id. */
-    private String productId;
+    private String skuCode;
 
     /** The Price details. */
     private List<ProductSellerDetail> priceDetails;
@@ -50,6 +50,7 @@ public class ProductDTO {
     private static final List<String> categories = List.of("mobile", "television", "camera", "headphone", "watch", "laptop");
 
     public ProductDTO(final Product product) {
+        this.skuCode = product.getSkuCode();
         this.productName = product.getProductName();
         this.shortDescription = product.getShortDescription();
         this.description = product.getDescription();

@@ -1,14 +1,9 @@
 package com.mine.ecomm.sellerservice.entity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mine.ecomm.sellerservice.dto.ProductDTO;
-
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 /**
@@ -20,6 +15,7 @@ public class Product {
 
     /** Product id */
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String productId;
 
     /** Product name */
@@ -82,16 +78,6 @@ public class Product {
 
     public Product(){
         this.cartIds = new ArrayList<>();
-    }
-
-    public void generateProductId(ProductDTO productDTO) {
-        final StringBuilder productId = new StringBuilder();
-        productId.append(productDTO.getProductName(), 0, 2);
-        productId.append(productDTO.getCategory(), 0, 2);
-        productId.append(productDTO.getSellerEmail(), 0, 2);
-        final LocalDateTime time = LocalDateTime.now();
-        productId.append(time);
-        this.productId = productId.toString();
     }
 
     public void addCartId(String cartId) {

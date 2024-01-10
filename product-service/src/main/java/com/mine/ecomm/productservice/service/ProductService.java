@@ -3,16 +3,19 @@ package com.mine.ecomm.productservice.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-import com.mongodb.lang.Nullable;
-import lombok.NonNull;
+import jakarta.annotation.Nonnull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.mine.ecomm.productservice.dto.InventoryResponse;
 import com.mine.ecomm.productservice.dto.ProductDTO;
 import com.mine.ecomm.productservice.entity.Product;
 import com.mine.ecomm.productservice.entity.ProductSellerDetail;
 import com.mine.ecomm.productservice.repository.ProductRepository;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,7 +60,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    private Product updateProductDetailsWithSellers(@Nullable final Product product, @NonNull final ProductDTO productDTO) {
+    private Product updateProductDetailsWithSellers(@Nullable final Product product, @Nonnull final ProductDTO productDTO) {
         final ProductSellerDetail newSellerDetail = new ProductSellerDetail();
         newSellerDetail.setProductPrice(productDTO.getProductPrice());
         newSellerDetail.setDiscount(productDTO.getDiscount());
@@ -67,6 +70,7 @@ public class ProductService {
             final List<ProductSellerDetail> productSellersDetails = new ArrayList<>();
             productSellersDetails.add(newSellerDetail);
             final Product newProduct = new Product();
+            newProduct.setSkuCode(UUID.randomUUID().toString());
             newProduct.setProductName(productDTO.getProductName());
             newProduct.setCategory(productDTO.getCategory());
             newProduct.setShortDescription(productDTO.getShortDescription());
@@ -98,5 +102,16 @@ public class ProductService {
     public ProductDTO getProductWithSeller(final String productName, final String sellerEmail) {
         final Optional<Product> optionalProduct = productRepository.findByProductNameAndSellerEmail(productName, sellerEmail);
         return optionalProduct.map(ProductDTO::new).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public List<InventoryResponse> isInStock(List<String> skuCodes) {
+        return productRepository.findBySkuCodes(skuCodes).stream()
+                .map(product ->
+                        InventoryResponse.builder()
+                                .skuCode(product.getSkuCode())
+                                .isInStock(product.getQuantity() > 0)
+                                .build()
+                ).toList();
     }
 }

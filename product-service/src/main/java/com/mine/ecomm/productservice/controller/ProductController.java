@@ -3,6 +3,7 @@ package com.mine.ecomm.productservice.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.mine.ecomm.productservice.dto.InventoryResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class ProductController {
      * @param productDTO the product dto
      */
     @PostMapping("/add")
-    public ResponseEntity<String> addProduct(final @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<String> addProduct(@RequestBody final ProductDTO productDTO) {
         productService.addNewProduct(productDTO);
         return new ResponseEntity<>("product added successfully.", HttpStatus.OK);
     }
@@ -66,5 +67,11 @@ public class ProductController {
     public ResponseEntity<ProductDTO> getProductWithSeller(@PathVariable String productName, @PathVariable String sellerEmail) {
         final ProductDTO product = productService.getProductWithSeller(productName,sellerEmail);
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @GetMapping("/in-stock")
+    @ResponseStatus(HttpStatus.OK)
+    public List<InventoryResponse> isInStock(final @RequestParam List<String> skuCodes) {
+        return productService.isInStock(skuCodes);
     }
 }

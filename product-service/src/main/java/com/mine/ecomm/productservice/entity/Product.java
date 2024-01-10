@@ -20,7 +20,10 @@ public class Product {
 
     /** The id. */
     @Id
+    @Field("_id")
     private String id;
+
+    private String skuCode;
 
     /** The Product name. */
     private String productName;

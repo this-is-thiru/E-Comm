@@ -1,5 +1,6 @@
 package com.mine.ecomm.productservice.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -14,4 +15,7 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 //    @Query("{'productName': ?0,'product_seller_details.sellerEmail': ?1}")
     @Query("{$and: [{'productName': ?0}, {'product_seller_details.sellerEmail': ?1}] }")
     Optional<Product> findByProductNameAndSellerEmail(String productName, String sellerEmail);
+
+    @Query("{'skuCode': {$in: ?0}}")
+    List<Product> findBySkuCodes(List<String> skuCodes);
 }
