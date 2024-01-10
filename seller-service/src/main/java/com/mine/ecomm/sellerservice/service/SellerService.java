@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.mine.ecomm.sellerservice.dto.SellerRateRequest;
-import com.mine.ecomm.sellerservice.dto.SellerRateResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.mine.ecomm.sellerservice.dto.ProductDTO;
+import com.mine.ecomm.sellerservice.dto.SellerRateRequest;
+import com.mine.ecomm.sellerservice.dto.SellerRateResponse;
 import com.mine.ecomm.sellerservice.entity.Product;
 import com.mine.ecomm.sellerservice.entity.SellerRating;
 import com.mine.ecomm.sellerservice.exception.MetadataException;
@@ -123,7 +123,6 @@ public class SellerService {
     }
 
     public List<SellerRateResponse> getAllSellersRating(final List<String> sellerEmails) {
-        List<SellerRating> bySellerEmailIn = sellerRateRepository.findAllBySellerEmailIn(sellerEmails);
         return sellerRateRepository.findAllBySellerEmailIn(sellerEmails).stream()
                 .map(this::createSellerRateResponse).toList();
     }

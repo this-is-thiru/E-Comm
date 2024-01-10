@@ -1,19 +1,22 @@
 package com.mine.ecomm.productservice.service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-import com.mine.ecomm.productservice.dto.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import com.mine.ecomm.productservice.dto.*;
 import com.mine.ecomm.productservice.entity.Product;
 import com.mine.ecomm.productservice.entity.ProductSellerDetail;
+import com.mine.ecomm.productservice.exception.ServiceException;
 import com.mine.ecomm.productservice.repository.ProductRepository;
 
 import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @Slf4j
@@ -109,38 +112,52 @@ public class ProductService {
         return optionalProduct.map(this::createProductResponse).orElse(null);
     }
 
-    public List<SellerDetail> getAllSellersForProduct(final String skuCode) {
+
+    public List<SellerDetail> getAllSellersForProduct(final String skuCode) throws ServiceException {
         final Optional<Product> optionalProduct = productRepository.findBySkuCode(skuCode);
         if (optionalProduct.isPresent()) {
             final List<ProductSellerDetail> productSellerDetails = optionalProduct.get().getProductSellerDetails();
-            return productSellerDetails.stream().map(this::createSellerDetail).toList();
-        }
-        return Collections.emptyList();
-    }
+            final Map<String, List<ProductSellerDetail>> sellerMap = productSellerDetails.stream()
+                    .collect(Collectors.groupingBy(ProductSellerDetail::getSellerEmail));
 
-    private SellerDetail createSellerDetail(final ProductSellerDetail productSellerDetail) {
-        final SellerDetail sellerDetail = new SellerDetail();
-        sellerDetail.setProductPrice(productSellerDetail.getProductPrice());
-        sellerDetail.setDiscount(productSellerDetail.getDiscount());
-        sellerDetail.setEffectivePrice(productSellerDetail.getEffectivePrice());
-        final String sellerEmail = productSellerDetail.getSellerEmail();
-        sellerDetail.setSellerEmail(sellerEmail);
+            final List<String> sellerEmails = sellerMap.keySet().stream().toList();
 
-        // Seller name and delivery charge and rating is fetched from seller service
-        final SellerRateResponse rateResponse = webClient.get()
-                .uri("http://localhost:8082/api/seller/seller-rating/{seller}", sellerEmail)
-                .retrieve()
-                .bodyToMono(SellerRateResponse.class)
-                .block();
-        if (rateResponse == null) {
-            return null;
+            // No sellers found for the product
+            if (sellerEmails.isEmpty()) {
+                return Collections.emptyList();
+            }
+
+            // Seller name and delivery charge and rating is fetched from seller service
+            final SellerRateResponse[] ratesResponse = webClient.get()
+                    .uri("http://localhost:8082/api/seller/sellers-rating/{seller}",
+                                uriBuilder -> uriBuilder.build(sellerEmails))
+                    .retrieve()
+                    .bodyToMono(SellerRateResponse[].class)
+                    .block();
+
+            if (ratesResponse == null) {
+                throw new ServiceException("Seller details not found in database.", HttpStatus.NO_CONTENT);
+            }
+            final List<SellerDetail> sellerDetails = new ArrayList<>();
+            for (SellerRateResponse rateResponse : ratesResponse) {
+                final SellerDetail sellerDetail = new SellerDetail();
+                final String sellerEmail = rateResponse.getSellerEmail();
+                final ProductSellerDetail productSellerDetail = sellerMap.get(sellerEmail).get(0);
+
+                sellerDetail.setSellerEmail(sellerEmail);
+                sellerDetail.setProductPrice(productSellerDetail.getProductPrice());
+                sellerDetail.setDiscount(productSellerDetail.getDiscount());
+                sellerDetail.setEffectivePrice(productSellerDetail.getEffectivePrice());
+                sellerDetail.setRating(rateResponse.getRating());
+                sellerDetail.setDeliveryCharge(rateResponse.getDeliveryCharge());
+                sellerDetail.setSellerName(rateResponse.getSellerName());
+
+                sellerDetails.add(sellerDetail);
+            }
+            return sellerDetails;
         }
-        sellerDetail.setRating(rateResponse.getRating());
-        sellerDetail.setDeliveryCharge(rateResponse.getDeliveryCharge());
-        sellerDetail.setSellerName(rateResponse.getSellerName());
-        sellerDetail.setDeliveryCharge(rateResponse.getDeliveryCharge());
-        sellerDetail.setRating(rateResponse.getRating());
-        return sellerDetail;
+        // No product found
+        throw new ServiceException("No product found for sku code " + skuCode, HttpStatus.NOT_FOUND);
     }
 
     @Transactional(readOnly = true)

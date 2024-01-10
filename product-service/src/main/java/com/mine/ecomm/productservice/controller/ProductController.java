@@ -3,6 +3,7 @@ package com.mine.ecomm.productservice.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.mine.ecomm.productservice.exception.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -79,7 +80,15 @@ public class ProductController {
     @GetMapping("/sellers/{skuCode}")
     @ResponseStatus(HttpStatus.OK)
     public List<SellerDetail> getAllSellersForProduct(final @PathVariable String skuCode) {
-        return productService.getAllSellersForProduct(skuCode);
+        try {
+            return productService.getAllSellersForProduct(skuCode);
+        } catch (final ServiceException e) {
+            if (e.getStatus() == HttpStatus.NO_CONTENT) {
+                throw new ProductServiceException(e.getMessage(), HttpStatus.NO_CONTENT);
+            } else {
+                throw new ProductServiceException(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
+        }
     }
 
     @GetMapping("/in-stock")
