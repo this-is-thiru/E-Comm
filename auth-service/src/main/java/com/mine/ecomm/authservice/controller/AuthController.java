@@ -1,6 +1,5 @@
 package com.mine.ecomm.authservice.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,17 +12,17 @@ import com.mine.ecomm.authservice.dto.UserDetailsDTO;
 import com.mine.ecomm.authservice.exception.AuthException;
 import com.mine.ecomm.authservice.service.AuthService;
 
+import lombok.RequiredArgsConstructor;
+
 
 @CrossOrigin
 @RestController
-@RequestMapping("auth")
+@RequestMapping("api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthService authService;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
     public ResponseEntity<String> addNewUser(@RequestBody final UserDetailsDTO userDetailsDTO){
