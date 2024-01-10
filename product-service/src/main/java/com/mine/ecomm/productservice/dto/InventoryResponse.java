@@ -1,4 +1,4 @@
-package com.mine.ecomm.inventoryservice.dto;
+package com.mine.ecomm.productservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
