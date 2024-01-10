@@ -1,9 +1,10 @@
 package com.mine.ecomm.productservice.entity;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,13 +12,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class ProductSellerDetail {
 
     @Field("product_price")
-    private double productPrice;
+    private Double productPrice;
 
     @Field("discount")
-    private int discount;
+    private Integer discount;
 
     @Field("effective_price")
-    private double effectivePrice;
+    private Double effectivePrice;
 
     @Field("seller_email")
     private String sellerEmail;

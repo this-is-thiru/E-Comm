@@ -1,15 +1,13 @@
 package com.mine.ecomm.productservice.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mine.ecomm.productservice.dto.InventoryResponse;
-import com.mine.ecomm.productservice.dto.ProductDTO;
+import com.mine.ecomm.productservice.dto.ProductRequest;
+import com.mine.ecomm.productservice.dto.ProductResponse;
 import com.mine.ecomm.productservice.entity.Product;
 import com.mine.ecomm.productservice.entity.ProductSellerDetail;
 import com.mine.ecomm.productservice.repository.ProductRepository;
@@ -27,69 +25,69 @@ public class ProductService {
     /**
      * Add product.
      *
-     * @param productDTO the product dto
+     * @param productRequest the product dto
      */
-    public void addNewProduct(@Nonnull final ProductDTO productDTO) {
-        final Optional<Product> productOptional = productRepository.findByProductName(productDTO.getProductName());
+    public void addNewProduct(@Nonnull final ProductRequest productRequest) {
+        final Optional<Product> productOptional = productRepository.findByProductName(productRequest.getProductName());
         final Product product;
         if (productOptional.isPresent()) {
-            log.info("Product with name {} already exists", productDTO.getProductName());
+            log.info("Product with name {} already exists", productRequest.getProductName());
             product = productOptional.get();
             final List<ProductSellerDetail> productSellersDetails = product.getProductSellerDetails();
             boolean isSellerAlreadyExist = false;
             for (int i = 0; i < productSellersDetails.size(); i++) {
                 final ProductSellerDetail oldSellerDetails = productSellersDetails.get(i);
-                if (productDTO.getSellerEmail().equals(oldSellerDetails.getSellerEmail())) {
-                    updateSellerDetail(oldSellerDetails, productDTO);
+                if (productRequest.getSellerEmail().equals(oldSellerDetails.getSellerEmail())) {
+                    updatePriceForSeller(oldSellerDetails, productRequest);
                     product.getProductSellerDetails().set(i, oldSellerDetails);
-                    product.setQuantity(product.getQuantity() + productDTO.getQuantity());
+                    product.setQuantity(product.getQuantity() + productRequest.getQuantity());
                     isSellerAlreadyExist = true;
                 }
             }
             // add product with new seller fields (Eg: price, discount, quantity)
             if (!isSellerAlreadyExist) {
-                addNewSellerToProduct(product, productDTO);
+                addNewSellerToProduct(product, productRequest);
             }
         } else {
-            product = addNewProductToCatalog(productDTO);
+            product = addNewProductToCatalog(productRequest);
         }
         productRepository.save(product);
     }
 
-    private Product addNewProductToCatalog(@Nonnull final ProductDTO productDTO) {
+    private Product addNewProductToCatalog(@Nonnull final ProductRequest productRequest) {
         final ProductSellerDetail newProductSellerDetail = new ProductSellerDetail();
-        updateSellerDetail(newProductSellerDetail, productDTO);
+        updatePriceForSeller(newProductSellerDetail, productRequest);
         final List<ProductSellerDetail> productSellersDetails = new ArrayList<>();
         productSellersDetails.add(newProductSellerDetail);
         final Product newProduct = new Product();
         newProduct.setSkuCode(UUID.randomUUID().toString());
-        newProduct.setProductName(productDTO.getProductName());
-        newProduct.setCategory(productDTO.getCategory());
-        newProduct.setShortDescription(productDTO.getShortDescription());
-        newProduct.setDescription(productDTO.getDescription());
+        newProduct.setProductName(productRequest.getProductName());
+        newProduct.setCategory(productRequest.getCategory());
+        newProduct.setShortDescription(productRequest.getShortDescription());
+        newProduct.setDescription(productRequest.getDescription());
         newProduct.setProductSellerDetails(productSellersDetails);
-        newProduct.setQuantity(productDTO.getQuantity());
+        newProduct.setQuantity(productRequest.getQuantity());
         return newProduct;
     }
 
-    private void addNewSellerToProduct(@Nonnull final Product product, @Nonnull final ProductDTO productDTO) {
+    private void addNewSellerToProduct(@Nonnull final Product product, @Nonnull final ProductRequest productRequest) {
         final ProductSellerDetail newSellerDetail = new ProductSellerDetail();
-        updateSellerDetail(newSellerDetail, productDTO);
+        updatePriceForSeller(newSellerDetail, productRequest);
         product.getProductSellerDetails().add(newSellerDetail);
-        product.setQuantity(product.getQuantity() + productDTO.getQuantity());
+        product.setQuantity(product.getQuantity() + productRequest.getQuantity());
     }
 
-    private void updateSellerDetail(@Nonnull final ProductSellerDetail sellerDetail, @Nonnull final ProductDTO productDTO) {
-        sellerDetail.setProductPrice(productDTO.getProductPrice());
-        sellerDetail.setDiscount(productDTO.getDiscount());
-        final double newSellerEffectivePrice = calculateEffectivePrice(productDTO.getProductPrice(), productDTO.getDiscount());
+    private void updatePriceForSeller(@Nonnull final ProductSellerDetail sellerDetail, @Nonnull final ProductRequest productRequest) {
+        sellerDetail.setProductPrice(productRequest.getProductPrice());
+        sellerDetail.setDiscount(productRequest.getDiscount());
+        final double newSellerEffectivePrice = calculateEffectivePrice(productRequest.getProductPrice(), productRequest.getDiscount());
         sellerDetail.setEffectivePrice(newSellerEffectivePrice);
         if (sellerDetail.getQuantity() == null || sellerDetail.getQuantity() == 0) {
-            sellerDetail.setQuantity(productDTO.getQuantity());
+            sellerDetail.setQuantity(productRequest.getQuantity());
         } else {
-            sellerDetail.setQuantity(sellerDetail.getQuantity() + productDTO.getQuantity());
+            sellerDetail.setQuantity(sellerDetail.getQuantity() + productRequest.getQuantity());
         }
-        sellerDetail.setSellerEmail(productDTO.getSellerEmail());
+        sellerDetail.setSellerEmail(productRequest.getSellerEmail());
     }
 
     /**
@@ -101,14 +99,14 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<ProductDTO> searchProductByProductName(final String productName) {
+    public List<ProductResponse> searchProductByProductName(final String productName) {
         final List<Product> productList = productRepository.searchProductByProductNameContainingIgnoreCase(productName);
-        return productList.stream().map(ProductDTO::new).toList();
+        return productList.stream().map(this::createProductResponse).toList();
     }
 
-    public ProductDTO getProductWithSeller(final String productName, final String sellerEmail) {
+    public ProductResponse getProductWithSeller(final String productName, final String sellerEmail) {
         final Optional<Product> optionalProduct = productRepository.findByProductNameAndSellerEmail(productName, sellerEmail);
-        return optionalProduct.map(ProductDTO::new).orElse(null);
+        return optionalProduct.map(this::createProductResponse).orElse(null);
     }
 
     @Transactional(readOnly = true)
@@ -120,6 +118,24 @@ public class ProductService {
                                 .isInStock(product.getQuantity() > 0)
                                 .build()
                 ).toList();
+    }
+
+    private ProductResponse createProductResponse(Product product) {
+        final ProductSellerDetail minPriceSeller = product.getProductSellerDetails().stream()
+                .filter(psd -> psd.getQuantity() > 0)
+                .min(Comparator.comparing(ProductSellerDetail::getEffectivePrice))
+                .orElse(new ProductSellerDetail());
+
+        final ProductResponse productResponse = new ProductResponse();
+        productResponse.setSkuCode(product.getSkuCode());
+        productResponse.setProductName(product.getProductName());
+        productResponse.setCategory(product.getCategory());
+        productResponse.setShortDescription(product.getShortDescription());
+        productResponse.setDescription(product.getDescription());
+        productResponse.setProductPrice(minPriceSeller.getProductPrice());
+        productResponse.setDiscount(minPriceSeller.getDiscount());
+        productResponse.setEffectivePrice(minPriceSeller.getEffectivePrice());
+        return productResponse;
     }
 
     private static double calculateEffectivePrice(double price, double discount) {
