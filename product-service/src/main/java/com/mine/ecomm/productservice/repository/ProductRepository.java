@@ -11,11 +11,12 @@ import org.springframework.data.mongodb.repository.Query;
 public interface ProductRepository extends MongoRepository<Product, String> {
     Optional<Product> findByProductName(String productName);
 
+    List<Product> searchProductByProductNameContainingIgnoreCase(String productName);
 
-//    @Query("{'productName': ?0,'product_seller_details.sellerEmail': ?1}")
-    @Query("{$and: [{'productName': ?0}, {'product_seller_details.sellerEmail': ?1}] }")
+//    @Query("{'product_name': ?0,'product_seller_details.seller_email': ?1}")
+    @Query("{$and: [{'product_name': ?0}, {'product_seller_details.seller_email': ?1}] }")
     Optional<Product> findByProductNameAndSellerEmail(String productName, String sellerEmail);
 
-    @Query("{'skuCode': {$in: ?0}}")
+    @Query("{'sku_code': {$in: ?0}}")
     List<Product> findBySkuCodes(List<String> skuCodes);
 }

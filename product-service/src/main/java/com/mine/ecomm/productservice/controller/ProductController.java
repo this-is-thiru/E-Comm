@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.mine.ecomm.productservice.dto.InventoryResponse;
+import com.mine.ecomm.productservice.exception.ProductServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,9 +59,13 @@ public class ProductController {
      * @return the product
      */
     @GetMapping("/{productName}")
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable String productName) {
-        final ProductDTO product = productService.getProduct(productName);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductDTO> searchProductByProductName(@PathVariable String productName) {
+        final List<ProductDTO> product = productService.searchProductByProductName(productName);
+        if (product.isEmpty()) {
+            throw new ProductServiceException("No product found with name: " + productName + ".", HttpStatus.NOT_FOUND);
+        }
+        return product;
     }
 
     @GetMapping("/{productName}/{sellerEmail}")

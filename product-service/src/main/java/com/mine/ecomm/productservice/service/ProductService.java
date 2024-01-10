@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import jakarta.annotation.Nonnull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +14,7 @@ import com.mine.ecomm.productservice.entity.Product;
 import com.mine.ecomm.productservice.entity.ProductSellerDetail;
 import com.mine.ecomm.productservice.repository.ProductRepository;
 
-import jakarta.annotation.Nullable;
+import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +29,7 @@ public class ProductService {
      *
      * @param productDTO the product dto
      */
-    public void addNewProduct(final ProductDTO productDTO) {
+    public void addNewProduct(@Nonnull final ProductDTO productDTO) {
         final Optional<Product> productOptional = productRepository.findByProductName(productDTO.getProductName());
         final Product product;
         if (productOptional.isPresent()) {
@@ -41,10 +40,7 @@ public class ProductService {
             for (int i = 0; i < productSellersDetails.size(); i++) {
                 final ProductSellerDetail oldSellerDetails = productSellersDetails.get(i);
                 if (productDTO.getSellerEmail().equals(oldSellerDetails.getSellerEmail())) {
-                    oldSellerDetails.setProductPrice(productDTO.getProductPrice());
-                    oldSellerDetails.setDiscount(productDTO.getDiscount());
-                    final Long oldQuantity = oldSellerDetails.getQuantity();
-                    oldSellerDetails.setQuantity(oldQuantity + productDTO.getQuantity());
+                    updateSellerDetail(oldSellerDetails, productDTO);
                     product.getProductSellerDetails().set(i, oldSellerDetails);
                     product.setQuantity(product.getQuantity() + productDTO.getQuantity());
                     isSellerAlreadyExist = true;
@@ -52,37 +48,48 @@ public class ProductService {
             }
             // add product with new seller fields (Eg: price, discount, quantity)
             if (!isSellerAlreadyExist) {
-                updateProductDetailsWithSellers(product, productDTO);
+                addNewSellerToProduct(product, productDTO);
             }
         } else {
-            product = updateProductDetailsWithSellers(null, productDTO);
+            product = addNewProductToCatalog(productDTO);
         }
         productRepository.save(product);
     }
 
-    private Product updateProductDetailsWithSellers(@Nullable final Product product, @Nonnull final ProductDTO productDTO) {
+    private Product addNewProductToCatalog(@Nonnull final ProductDTO productDTO) {
+        final ProductSellerDetail newProductSellerDetail = new ProductSellerDetail();
+        updateSellerDetail(newProductSellerDetail, productDTO);
+        final List<ProductSellerDetail> productSellersDetails = new ArrayList<>();
+        productSellersDetails.add(newProductSellerDetail);
+        final Product newProduct = new Product();
+        newProduct.setSkuCode(UUID.randomUUID().toString());
+        newProduct.setProductName(productDTO.getProductName());
+        newProduct.setCategory(productDTO.getCategory());
+        newProduct.setShortDescription(productDTO.getShortDescription());
+        newProduct.setDescription(productDTO.getDescription());
+        newProduct.setProductSellerDetails(productSellersDetails);
+        newProduct.setQuantity(productDTO.getQuantity());
+        return newProduct;
+    }
+
+    private void addNewSellerToProduct(@Nonnull final Product product, @Nonnull final ProductDTO productDTO) {
         final ProductSellerDetail newSellerDetail = new ProductSellerDetail();
-        newSellerDetail.setProductPrice(productDTO.getProductPrice());
-        newSellerDetail.setDiscount(productDTO.getDiscount());
-        newSellerDetail.setQuantity(productDTO.getQuantity());
-        newSellerDetail.setSellerEmail(productDTO.getSellerEmail());
-        if (product == null) {
-            final List<ProductSellerDetail> productSellersDetails = new ArrayList<>();
-            productSellersDetails.add(newSellerDetail);
-            final Product newProduct = new Product();
-            newProduct.setSkuCode(UUID.randomUUID().toString());
-            newProduct.setProductName(productDTO.getProductName());
-            newProduct.setCategory(productDTO.getCategory());
-            newProduct.setShortDescription(productDTO.getShortDescription());
-            newProduct.setDescription(productDTO.getDescription());
-            newProduct.setProductSellerDetails(productSellersDetails);
-            newProduct.setQuantity(productDTO.getQuantity());
-            return newProduct;
+        updateSellerDetail(newSellerDetail, productDTO);
+        product.getProductSellerDetails().add(newSellerDetail);
+        product.setQuantity(product.getQuantity() + productDTO.getQuantity());
+    }
+
+    private void updateSellerDetail(@Nonnull final ProductSellerDetail sellerDetail, @Nonnull final ProductDTO productDTO) {
+        sellerDetail.setProductPrice(productDTO.getProductPrice());
+        sellerDetail.setDiscount(productDTO.getDiscount());
+        final double newSellerEffectivePrice = calculateEffectivePrice(productDTO.getProductPrice(), productDTO.getDiscount());
+        sellerDetail.setEffectivePrice(newSellerEffectivePrice);
+        if (sellerDetail.getQuantity() == null || sellerDetail.getQuantity() == 0) {
+            sellerDetail.setQuantity(productDTO.getQuantity());
         } else {
-            product.getProductSellerDetails().add(newSellerDetail);
-            product.setQuantity(product.getQuantity() + productDTO.getQuantity());
-            return product;
+            sellerDetail.setQuantity(sellerDetail.getQuantity() + productDTO.getQuantity());
         }
+        sellerDetail.setSellerEmail(productDTO.getSellerEmail());
     }
 
     /**
@@ -94,9 +101,9 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public ProductDTO getProduct(final String productName) {
-        final Optional<Product> optionalProduct = productRepository.findByProductName(productName);
-        return optionalProduct.map(ProductDTO::new).orElse(null);
+    public List<ProductDTO> searchProductByProductName(final String productName) {
+        final List<Product> productList = productRepository.searchProductByProductNameContainingIgnoreCase(productName);
+        return productList.stream().map(ProductDTO::new).toList();
     }
 
     public ProductDTO getProductWithSeller(final String productName, final String sellerEmail) {
@@ -113,5 +120,9 @@ public class ProductService {
                                 .isInStock(product.getQuantity() > 0)
                                 .build()
                 ).toList();
+    }
+
+    private static double calculateEffectivePrice(double price, double discount) {
+        return price - (price * discount / 100);
     }
 }
