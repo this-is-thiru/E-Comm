@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+@SuppressWarnings("unused")
 @RestControllerAdvice
 public class ErrorHandler {
     @ExceptionHandler(ProductServiceException.class)
