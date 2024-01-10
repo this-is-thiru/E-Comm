@@ -1,20 +1,22 @@
 package com.mine.ecomm.orderservice.controller;
 
-import com.mine.ecomm.orderservice.dto.OrderDTO;
-import com.mine.ecomm.orderservice.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.mine.ecomm.orderservice.dto.OrderRequest;
+import com.mine.ecomm.orderservice.service.OrderService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/order")
+@RequiredArgsConstructor
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
 
     /**
@@ -31,8 +33,8 @@ public class OrderController {
     }
 
     @GetMapping("/all/buyer/{email}")
-    public ResponseEntity<List<OrderDTO>> getAllBuyerOrders(final @PathVariable String email) {
-        final List<OrderDTO> buyerOrders = orderService.getAllBuyerOrders(email);
+    public ResponseEntity<List<OrderRequest>> getAllBuyerOrders(final @PathVariable String email) {
+        final List<OrderRequest> buyerOrders = orderService.getAllBuyerOrders(email);
         return new ResponseEntity<>(buyerOrders, HttpStatus.OK);
     }
 
