@@ -9,8 +9,7 @@ import lombok.Data;
  * The type Account dto.
  */
 @Data
-public class AccountDTO {
-
+public class CreateAccountRequest {
     @Email(message = "email should be in correct format.")
     private String emailId;
     @Pattern(regexp = "^[A-Za-z][A-Za-z\\s]*$", message = "Enter the valid name. name should not contain numeric and special characters.")
@@ -21,6 +20,8 @@ public class AccountDTO {
     private String password;
     private String confirmPassword;
     private String phoneNumber;
-    private String accountType;
 
+    // equals check using validation constraints
+    @Pattern(regexp = "^(buyer|seller)$", message = "Account type should be buyer or seller.")
+    private String accountType;
 }

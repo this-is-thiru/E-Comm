@@ -3,10 +3,10 @@ package com.mine.ecomm.accountservice.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mine.ecomm.accountservice.dto.AccountDTO;
+import com.mine.ecomm.accountservice.dto.CreateAccountRequest;
+import com.mine.ecomm.accountservice.dto.UpdateAccountRequest;
 import com.mine.ecomm.accountservice.entity.AccountEntity;
 import com.mine.ecomm.accountservice.entity.Buyer;
 import com.mine.ecomm.accountservice.entity.Seller;
@@ -15,27 +15,29 @@ import com.mine.ecomm.accountservice.repository.BuyerRepository;
 import com.mine.ecomm.accountservice.repository.SellerRepository;
 import com.mine.ecomm.accountservice.validator.AccountValidator;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class AccountService {
 
-    @Autowired
-    private BuyerRepository buyerRepository;
+    private final BuyerRepository buyerRepository;
+    private final SellerRepository sellerRepository;
 
-    @Autowired
-    private SellerRepository sellerRepository;
+    private static final String BUYER = "buyer";
 
-    public String registerNewCustomer(AccountDTO accountDTO) {
-        AccountValidator.validateCustomer(accountDTO);
-        Boolean emailAvailable = checkAvailabilityOfEmailId(accountDTO.getEmailId().toLowerCase());
-        Boolean phoneNumberAvailable = checkAvailabilityOfPhoneNumber(accountDTO.getPhoneNumber());
+    public String registerNewCustomer(CreateAccountRequest createAccountRequest) {
+        AccountValidator.validateCustomer(createAccountRequest);
+        Boolean emailAvailable = checkAvailabilityOfEmailId(createAccountRequest.getEmailId().toLowerCase());
+        Boolean phoneNumberAvailable = checkAvailabilityOfPhoneNumber(createAccountRequest.getPhoneNumber());
         if (emailAvailable) {
             if (phoneNumberAvailable) {
-                String emailIdToDB = accountDTO.getEmailId().toLowerCase();
-                accountDTO.setEmailId(emailIdToDB);
-                if ("buyer".equals(accountDTO.getAccountType())) {
-                    return saveAccount(accountDTO, new Buyer());
-                } else if ("seller".equals(accountDTO.getAccountType())) {
-                    return saveAccount(accountDTO, new Seller());
+                String emailIdToDB = createAccountRequest.getEmailId().toLowerCase();
+                createAccountRequest.setEmailId(emailIdToDB);
+                if ("buyer".equals(createAccountRequest.getAccountType())) {
+                    return saveAccount(createAccountRequest, new Buyer());
+                } else if ("seller".equals(createAccountRequest.getAccountType())) {
+                    return saveAccount(createAccountRequest, new Seller());
                 }
                 throw new ServiceException("The user type to register is missing");
             } else {
@@ -46,29 +48,30 @@ public class AccountService {
         }
     }
 
-    private String saveAccount(AccountDTO accountDTO, AccountEntity account){
-        account.setEmailId(accountDTO.getEmailId());
-        account.setName(accountDTO.getName().trim());
-        account.setPassword(accountDTO.getPassword());
-        account.setPhoneNumber(accountDTO.getPhoneNumber());
+    private String saveAccount(CreateAccountRequest createAccountRequest, AccountEntity account){
+        account.setEmailId(createAccountRequest.getEmailId());
+        account.setName(createAccountRequest.getName().trim());
+        account.setPassword(createAccountRequest.getPassword());
+        account.setPhoneNumber(createAccountRequest.getPhoneNumber());
 
-        if (account instanceof Buyer){
-            Buyer buyer = (Buyer) account;
+        if (account instanceof Buyer buyer){
             buyerRepository.saveAndFlush(buyer);
             System.out.println(buyer);
-            return accountDTO.getEmailId() + "is successfully registered as buyer.";
+            return createAccountRequest.getEmailId() + "is successfully registered as buyer.";
         }
-        if (account instanceof Seller) {
-            Seller seller = (Seller) account;
+        if (account instanceof Seller seller) {
             sellerRepository.saveAndFlush(seller);
             System.out.println(seller);
-            return accountDTO.getEmailId() + "is successfully registered as seller.";
+            return createAccountRequest.getEmailId() + "is successfully registered as seller.";
         }
         return null;
     }
 
-    public String updateCustomerDetails(final String accountType, final String emailId, final String oldPassword, final String newPassword) {
-        if ("buyer".equals(accountType)){
+    public String updateCustomerDetails(final String emailId, final UpdateAccountRequest accountRequest) {
+        final String accountType = accountRequest.getAccountType();
+        final String oldPassword = accountRequest.getOldPassword();
+        final String newPassword = accountRequest.getNewPassword();
+        if (BUYER.equals(accountType)){
             final Optional<Buyer> optionalSeller = buyerRepository.findById(emailId);
             if (optionalSeller.isPresent()){
                 final Buyer buyer = optionalSeller.get();
@@ -103,13 +106,4 @@ public class AccountService {
         List<Buyer> list = buyerRepository.findByPhoneNumber(phoneNumber);
         return list.isEmpty();
     }
-
-//    public boolean isValidBuyer(UserDTO userDTO) {
-//
-//    }
-//
-//    public boolean isValidSeller(UserDTO userDTO) {
-//
-//    }
-
 }

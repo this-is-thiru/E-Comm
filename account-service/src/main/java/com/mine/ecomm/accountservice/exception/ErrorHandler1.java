@@ -1,6 +1,6 @@
 package com.mine.ecomm.accountservice.exception;//package com.mine.ekart.users.exception;
 //
-//import com.mine.ekart.users.dto.AccountDTO;
+//import com.mine.ekart.users.dto.CreateAccountRequest;
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,8 +16,8 @@ package com.mine.ecomm.accountservice.exception;//package com.mine.ekart.users.e
 //    }
 //
 //    @ExceptionHandler(ServiceException.class)
-//    public ResponseEntity<AccountDTO> handleServiceException(ServiceException exception, WebRequest webRequest) {
-//        AccountDTO n = new AccountDTO();
+//    public ResponseEntity<CreateAccountRequest> handleServiceException(ServiceException exception, WebRequest webRequest) {
+//        CreateAccountRequest n = new CreateAccountRequest();
 //        n.setErrorMessage("error");
 //        return new ResponseEntity<>(n, HttpStatus.NOT_ACCEPTABLE);
 //    }
