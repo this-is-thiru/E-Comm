@@ -101,6 +101,10 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
+    public Optional<ProductResponse> getProductById(final String skuCode) {
+        final Optional<Product> optionalProduct = productRepository.findBySkuCode(skuCode);
+        return optionalProduct.map(this::createProductResponse);
+    }
 
     public List<ProductResponse> searchProductByProductName(final String productName) {
         final List<Product> productList = productRepository.searchProductByProductNameContainingIgnoreCase(productName);

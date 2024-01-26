@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ProductResponse {
     private String productName;
+    private String productImageUrl;
     private double productPrice;
     private int discount;
     private double effectivePrice;
@@ -17,4 +18,5 @@ public class ProductResponse {
     private String category;
     private String sellerEmail;
     private String skuCode;
+    private double rating;
 }
