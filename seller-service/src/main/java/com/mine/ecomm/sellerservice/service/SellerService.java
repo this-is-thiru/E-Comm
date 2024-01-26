@@ -51,7 +51,7 @@ public class SellerService {
         sellerCatalogRepository.saveAndFlush(entity);
 
         final String response = webClient.post()
-                .uri("http://localhost:8083/product/add")
+                .uri("http://localhost:8083/api/product/add")
                 .bodyValue(BodyInserters.fromValue(entity))
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, ClientResponse::createException)
