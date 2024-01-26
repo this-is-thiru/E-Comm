@@ -24,6 +24,7 @@
         <module>address-service</module>
         <module>account-service</module>
         <module>discovery-server</module>
+        <module>wishlist-server</module>
     </modules>
 
     <properties>

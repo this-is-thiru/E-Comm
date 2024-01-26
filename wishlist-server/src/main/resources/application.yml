@@ -1,0 +1,14 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: wishlist-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://b2iseljpwvvfjsqjllt7-mysql.services.clever-cloud.com:3306/b2iseljpwvvfjsqjllt7
+    username: uf2kmgsho2dq7l4t
+    password: 7RyCbV7om8bKN7JA0Nna
+  jpa:
+    hibernate:
+      ddl-auto: update

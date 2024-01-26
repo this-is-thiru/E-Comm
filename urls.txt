@@ -7,9 +7,6 @@
 3. Ekart-Product:
     "http://localhost:8083/api/product"
 
-x. Ekart-Inventory:
-    "http://localhost:8092/api/inventory"
-
 4. Ekart-Cart:
     "http://localhost:8400/cart"
 
@@ -20,7 +17,7 @@ x. Ekart-Inventory:
     "http://localhost:8086/order"
 
 7. Ekart-Wishlist:
-    "http://localhost:8700/wishlist"
+    "http://localhost:8087/wishlist"
 
 8. Ekart-CardInfo:
     "http://localhost:8088/cardinfo"
