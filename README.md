@@ -13,6 +13,8 @@ idea.max.intellisense.load.filesize=1500
 * ###  Codeium:
     * Install Codeium. - https://codeium.com/
     * Very useful to auto complete when we are working on code.
+* ###  POJO to JSON:
+    * Install POJO to JSON plugin.
 
 ## Build project without Tests:
 * #### Note: Demo Unit Tests and Integration Tests has been implemented in Order Service.
