@@ -6,6 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 
 @RestControllerAdvice
@@ -18,6 +19,11 @@ public class ErrorHandler {
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<String> handleServiceException(ServiceException exception, WebRequest webRequest) {
         return new ResponseEntity<>("error", HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(WebClientResponseException.class)
+    public ResponseEntity<String> handleWebClientResponseException(WebClientResponseException exception, WebRequest webRequest) {
+        return new ResponseEntity<>("Product adding to all products catalog is failed", HttpStatus.NOT_MODIFIED);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

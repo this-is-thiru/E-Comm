@@ -26,6 +26,6 @@ public class RestTemplateProvider {
      * @return the response entity
      */
     public ResponseEntity<String> post(Product product) {
-        return restTemplate.postForEntity("http://localhost:8300/product/add", product, String.class, "");
+        return restTemplate.postForEntity("http://localhost:8083/product/add", product, String.class, "");
     }
 }

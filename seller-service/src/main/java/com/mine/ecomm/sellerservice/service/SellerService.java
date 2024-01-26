@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.mine.ecomm.sellerservice.dto.ProductDTO;
@@ -48,14 +50,15 @@ public class SellerService {
         entity.setSellerEmail(productDTO.getSellerEmail());
         sellerCatalogRepository.saveAndFlush(entity);
 
-        webClient.post()
-                .uri("http://localhost:8092/api/inventory")
+        final String response = webClient.post()
+                .uri("http://localhost:8083/product/add")
                 .bodyValue(BodyInserters.fromValue(entity))
                 .retrieve()
+                .onStatus(HttpStatusCode::isError, ClientResponse::createException)
                 .bodyToMono(String.class)
                 .block();
 
-        final ResponseEntity<String> response = restTemplateProvider.post(entity);
+//        final ResponseEntity<String> response = restTemplateProvider.post(entity);
         if (response == null) {
             throw new MetadataException("Failed to add product to all products.");
         }
