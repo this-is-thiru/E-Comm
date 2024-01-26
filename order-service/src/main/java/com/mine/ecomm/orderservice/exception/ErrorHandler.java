@@ -11,12 +11,17 @@ import org.springframework.web.context.request.WebRequest;
 public class ErrorHandler {
     @ExceptionHandler(MetadataException.class)
     public ResponseEntity<String> handleInvalidException(MetadataException exception, WebRequest webRequest) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_MODIFIED);
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(ServiceException.class)
-    public ResponseEntity<String> handleServiceException(ServiceException exception, WebRequest webRequest) {
+    public ResponseEntity<String> handleServiceException(ServiceException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleServiceException(IllegalArgumentException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_MODIFIED);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

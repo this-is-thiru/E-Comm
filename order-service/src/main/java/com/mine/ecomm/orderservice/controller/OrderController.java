@@ -18,18 +18,17 @@ public class OrderController {
 
     private final OrderService orderService;
 
-
-    /**
-     * Test Path variable and path param.
-     *
-     * @param seller the seller
-     * @param rating the rating
-     * @return the response entity
-     */
     @GetMapping("/rate/{seller}")
     public ResponseEntity<String> test(final @PathVariable String seller, final @RequestParam("rate") int rating) {
         final String message = seller + rating;
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String placeOrder(final @RequestBody OrderRequest orderRequest) {
+        final String orderId = orderService.placeOrder(orderRequest);
+        return "Order placed successfully: " + orderId;
     }
 
     @GetMapping("/all/buyer/{email}")
