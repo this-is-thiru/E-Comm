@@ -1,12 +1,14 @@
 package com.mine.ecomm.orderservice.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.mine.ecomm.orderservice.dto.OrderRequest;
+import com.mine.ecomm.orderservice.exception.MetadataException;
 import com.mine.ecomm.orderservice.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,8 +29,11 @@ public class OrderController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public String placeOrder(final @RequestBody OrderRequest orderRequest) {
-        final String orderId = orderService.placeOrder(orderRequest);
-        return "Order placed successfully: " + orderId;
+        final Optional<String> optionalOrder = orderService.placeOrder(orderRequest);
+        if (optionalOrder.isPresent()) {
+            return "OrderEntity placed successfully: " + optionalOrder.get();
+        }
+        throw new MetadataException( "Product is not in stock, please try again later.");
     }
 
     @GetMapping("/all/buyer/{email}")

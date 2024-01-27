@@ -5,13 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 
 @RestControllerAdvice
 public class ErrorHandler {
     @ExceptionHandler(MetadataException.class)
-    public ResponseEntity<String> handleInvalidException(MetadataException exception, WebRequest webRequest) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<String> handleInvalidException(MetadataException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_MODIFIED);
     }
 
     @ExceptionHandler(ServiceException.class)

@@ -14,7 +14,7 @@ public class OrderLineItemId implements Serializable {
     @Nonnull
     private String skuCode;
     @Nonnull
-    private String orderId;
+    private String orderNumber;
 
     @Override
     public boolean equals(Object obj) {
@@ -25,7 +25,7 @@ public class OrderLineItemId implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         final OrderLineItemId other = (OrderLineItemId) obj;
-        if (!orderId.equals(other.orderId))
+        if (!orderNumber.equals(other.orderNumber))
             return false;
         return skuCode.equals(other.skuCode);
     }

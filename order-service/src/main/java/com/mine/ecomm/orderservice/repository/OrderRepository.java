@@ -1,10 +1,11 @@
 package com.mine.ecomm.orderservice.repository;
 
-import com.mine.ecomm.orderservice.entity.Order;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 
-public interface OrderRepository extends JpaRepository<Order, Integer> {
-    List<Order> findByBuyer(String buyer);
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.mine.ecomm.orderservice.entity.OrderEntity;
+
+public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
+    List<OrderEntity> findByBuyer(String buyer);
 }
