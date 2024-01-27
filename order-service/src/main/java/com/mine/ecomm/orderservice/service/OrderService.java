@@ -3,7 +3,6 @@ package com.mine.ecomm.orderservice.service;
 import com.mine.ecomm.orderservice.dto.InventoryResponse;
 import com.mine.ecomm.orderservice.dto.OrderLineItemDTO;
 import com.mine.ecomm.orderservice.dto.OrderRequest;
-import com.mine.ecomm.orderservice.dto.OrderStatus;
 import com.mine.ecomm.orderservice.entity.Order;
 import com.mine.ecomm.orderservice.entity.OrderLineItem;
 import com.mine.ecomm.orderservice.exception.ServiceException;
