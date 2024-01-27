@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import com.mine.ecomm.productservice.exception.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +14,7 @@ import com.mine.ecomm.productservice.dto.ProductResponse;
 import com.mine.ecomm.productservice.dto.SellerDetail;
 import com.mine.ecomm.productservice.entity.Product;
 import com.mine.ecomm.productservice.exception.ProductServiceException;
+import com.mine.ecomm.productservice.exception.ServiceException;
 import com.mine.ecomm.productservice.service.ProductService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,13 +54,14 @@ public class ProductController {
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
-    @GetMapping("/{sku-code}")
-    public ResponseEntity<String> getProduct(@PathVariable("sku-code") String skuCode) {
+    @GetMapping("/sku-code/{sku-code}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductResponse getProduct(@PathVariable("sku-code") String skuCode) {
         final Optional<ProductResponse> optionalProduct = productService.getProductById(skuCode);
         if (optionalProduct.isEmpty()) {
             throw new ProductServiceException("No product found with skuCode: " + skuCode + ".", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("product added successfully.", HttpStatus.OK);
+        return optionalProduct.get();
     }
 
 
