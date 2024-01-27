@@ -1,17 +1,17 @@
 package com.mine.ecomm.orderservice.dto;
 
-import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderLineItemsDto {
-    private Long id;
+public class OrderLineItemDTO {
     private String skuCode;
-    private BigDecimal price;
+    private String productName;
+    private Double productPrice;
     private Integer quantity;
 }

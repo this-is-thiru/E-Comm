@@ -1,35 +1,30 @@
 package com.mine.ecomm.orderservice.entity;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "ORDER")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String orderId;
-    private String productId;
     private LocalDateTime orderedOn;
     private LocalDateTime deliveredOn;
-    private LocalDateTime returnedOn;
     private LocalDateTime cancelledOn;
-    private String status;
-    private String buyer;
-    private String seller;
+    private LocalDateTime returnedOn;
 
     // wait for these changes
-    private String orderNumber;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<OrderLineItems> orderLineItemsList;
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<OrderLineItem> orderLineItemList;
 }

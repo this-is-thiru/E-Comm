@@ -1,20 +1,20 @@
-package com.mine.ecomm.wishlistservice.entity;
-
-import java.io.Serializable;
+package com.mine.ecomm.orderservice.entity;
 
 import jakarta.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ProductId implements Serializable {
+public class OrderLineItemId implements Serializable {
     @Nonnull
-    private String productId;
+    private String skuCode;
     @Nonnull
-    private String buyerEmail;
+    private String orderId;
 
     @Override
     public boolean equals(Object obj) {
@@ -24,10 +24,9 @@ public class ProductId implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final ProductId other = (ProductId) obj;
-        if (!buyerEmail.equals(other.buyerEmail)) {
+        final OrderLineItemId other = (OrderLineItemId) obj;
+        if (!orderId.equals(other.orderId))
             return false;
-        }
-        return productId.equals(other.productId);
+        return skuCode.equals(other.skuCode);
     }
 }
