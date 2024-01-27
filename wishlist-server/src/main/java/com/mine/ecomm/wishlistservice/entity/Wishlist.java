@@ -1,26 +1,24 @@
 package com.mine.ecomm.wishlistservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Set;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name = "WISHLISTS")
+@Entity(name = "WISHLIST")
 public class Wishlist {
     @Id
+    @Column(name = "buyer_email")
+    @SuppressWarnings("JpaDataSourceORMInspection")
     private String buyerEmail;
 
-    @OneToMany(mappedBy = "buyerEmail")
-    private List<Product> products;
+    @OneToMany(mappedBy = "wishlist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Product> products;
 }

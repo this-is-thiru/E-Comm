@@ -10,11 +10,17 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 
 @RestControllerAdvice
+@SuppressWarnings("unused")
 public class ErrorHandler {
 
     @ExceptionHandler(WebClientResponseException.class)
     public ResponseEntity<String> handleWebClientResponseException(WebClientResponseException exception, WebRequest webRequest) {
         return new ResponseEntity<>("Fetching product details based on ID is failed", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(WishlistServiceException.class)
+    public ResponseEntity<String> handleWishlistServiceException(WishlistServiceException exception, WebRequest webRequest) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
