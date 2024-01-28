@@ -3,13 +3,12 @@ package com.mine.ecomm.orderservice.controller;
 import java.util.List;
 import java.util.Optional;
 
-import com.mine.ecomm.orderservice.dto.OrderItemIdRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.mine.ecomm.orderservice.dto.OrderDTO;
-import com.mine.ecomm.orderservice.entity.OrderLineItemId;
+import com.mine.ecomm.orderservice.dto.OrderItemIdRequest;
 import com.mine.ecomm.orderservice.exception.MetadataException;
 import com.mine.ecomm.orderservice.service.OrderService;
 
