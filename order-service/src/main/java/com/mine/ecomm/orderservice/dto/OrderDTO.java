@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderRequest {
+public class OrderDTO {
+    private String buyerEmail;
     private List<OrderLineItemDTO> orderLineItemDTOList;
 }

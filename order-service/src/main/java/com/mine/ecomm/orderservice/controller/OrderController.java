@@ -3,18 +3,20 @@ package com.mine.ecomm.orderservice.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.mine.ecomm.orderservice.dto.OrderItemIdRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.mine.ecomm.orderservice.dto.OrderRequest;
+import com.mine.ecomm.orderservice.dto.OrderDTO;
+import com.mine.ecomm.orderservice.entity.OrderLineItemId;
 import com.mine.ecomm.orderservice.exception.MetadataException;
 import com.mine.ecomm.orderservice.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -28,7 +30,7 @@ public class OrderController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public String placeOrder(final @RequestBody OrderRequest orderRequest) {
+    public String placeOrder(final @RequestBody OrderDTO orderRequest) {
         final Optional<String> optionalOrder = orderService.placeOrder(orderRequest);
         if (optionalOrder.isPresent()) {
             return "OrderEntity placed successfully: " + optionalOrder.get();
@@ -37,20 +39,20 @@ public class OrderController {
     }
 
     @GetMapping("/all/buyer/{email}")
-    public ResponseEntity<List<OrderRequest>> getAllBuyerOrders(final @PathVariable String email) {
-        final List<OrderRequest> buyerOrders = orderService.getAllBuyerOrders(email);
+    public ResponseEntity<List<OrderDTO>> getAllBuyerOrders(final @PathVariable String email) {
+        final List<OrderDTO> buyerOrders = orderService.getAllBuyerOrders(email);
         return new ResponseEntity<>(buyerOrders, HttpStatus.OK);
     }
 
-    @PostMapping("/cancel/{id}")
-    public ResponseEntity<String> cancelOrderById(final @PathVariable int id) {
-        final String msg = orderService.cancelOrderById(id);
+    @PostMapping("/cancel")
+    public ResponseEntity<String> cancelOrderById(final @RequestBody OrderItemIdRequest orderItemIdRequest) {
+        final String msg = orderService.cancelOrderById(orderItemIdRequest);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
-    @PostMapping("/return/{id}")
-    public ResponseEntity<String> returnOrderById(final @PathVariable int id) {
-        final String msg = orderService.returnOrderById(id);
+    @PostMapping("/return")
+    public ResponseEntity<String> returnOrderById(final @RequestBody OrderItemIdRequest orderItemIdRequest) {
+        final String msg = orderService.returnOrderById(orderItemIdRequest);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 

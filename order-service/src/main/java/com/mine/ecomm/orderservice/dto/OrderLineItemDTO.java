@@ -1,5 +1,7 @@
 package com.mine.ecomm.orderservice.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +16,10 @@ public class OrderLineItemDTO {
     private String productName;
     private Double productPrice;
     private Integer quantity;
+    private OrderStatus status;
+    private String sellerEmail;
+    private LocalDateTime orderedOn;
+    private LocalDateTime deliveredOn;
+    private LocalDateTime cancelledOn;
+    private LocalDateTime returnedOn;
 }

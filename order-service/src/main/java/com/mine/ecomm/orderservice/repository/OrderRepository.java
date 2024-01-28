@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.mine.ecomm.orderservice.entity.OrderEntity;
 
 public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
-    List<OrderEntity> findByBuyer(String buyer);
+    List<OrderEntity> findByBuyerEmailOrderByOrderedOnDesc(String buyer);
 }

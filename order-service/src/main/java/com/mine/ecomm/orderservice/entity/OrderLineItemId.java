@@ -1,20 +1,21 @@
 package com.mine.ecomm.orderservice.entity;
 
-import jakarta.annotation.Nonnull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 
-@NoArgsConstructor
-@AllArgsConstructor
+import jakarta.annotation.Nonnull;
+import lombok.Getter;
+
 @Getter
 public class OrderLineItemId implements Serializable {
     @Nonnull
-    private String skuCode;
+    private final String skuCode;
     @Nonnull
-    private String orderNumber;
+    private final String orderEntity;
+
+    public OrderLineItemId(@Nonnull String skuCode, @Nonnull String orderId) {
+        this.skuCode = skuCode;
+        this.orderEntity = orderId;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -25,7 +26,7 @@ public class OrderLineItemId implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         final OrderLineItemId other = (OrderLineItemId) obj;
-        if (!orderNumber.equals(other.orderNumber))
+        if (!orderEntity.equals(other.orderEntity))
             return false;
         return skuCode.equals(other.skuCode);
     }

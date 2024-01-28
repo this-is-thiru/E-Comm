@@ -1,5 +1,6 @@
 package com.mine.ecomm.orderservice.entity;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -15,8 +16,11 @@ import lombok.Setter;
 @Entity(name = "ORDER_ENTITY")
 public class OrderEntity {
     @Id
+    @Column(length = 50)
     private String orderId;
-    private String buyer;
+    @Column(length = 50)
+    private String buyerEmail;
+    private LocalDateTime orderedOn;
 
     // wait for these changes
     @OneToMany(mappedBy = "orderEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
