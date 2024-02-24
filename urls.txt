@@ -30,3 +30,6 @@
 
 11. Ekart-Authentication:
     "http://localhost:8091/auth"
+
+12. Ekart-Gateway:
+    "http://localhost:8080/gateway"

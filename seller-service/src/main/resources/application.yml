@@ -1,5 +1,6 @@
+# Eureka Client and run any port that is available as we are not defining specific port.
 server:
-  port: 8082
+  port: 0
 
 # Eureka Server
 eureka:

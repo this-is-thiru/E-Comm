@@ -13,13 +13,18 @@ import com.mine.ecomm.sellerservice.service.SellerService;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/seller")
 @RequiredArgsConstructor
 public class SellerController {
 
     private final SellerService sellerService;
+
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public String test() {
+        return "test seller controller";
+    }
 
     @PostMapping("/product/add")
     @ResponseStatus(HttpStatus.CREATED)

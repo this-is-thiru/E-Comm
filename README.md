@@ -26,3 +26,18 @@ mvn clean install -DskipTests=true
 ```
 mvn clean install -P it
 ```
+
+
+## Test Api Gateway:
+
+1. Run Discovery Server
+2. Run Api Gateway
+3. Run Seller Service
+* Try to make api call with following url:
+```angular2html
+http://localhost:8080/api/seller/
+```
+```angular2html
+http://localhost:8080/eureka/web
+```
+Note: For now I have implemented it with Eureka Client only on seller service and api gateway service.
