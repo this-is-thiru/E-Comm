@@ -1,4 +1,4 @@
-package com.mine.ecomm.authservice.exception;
+package com.mine.ecomm.apigatewayservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

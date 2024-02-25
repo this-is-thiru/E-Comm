@@ -1,15 +1,17 @@
-package com.mine.ecomm.authservice.dto;
+package com.mine.ecomm.apigatewayservice.dto;
 
-import com.mine.ecomm.authservice.entity.UserDetailsEntity;
+import com.mine.ecomm.apigatewayservice.entity.UserDetailsEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDetailsDTO {
+public class RegistrationRequest {
     private String username;
     private String password;
     private String userType;
@@ -18,9 +20,13 @@ public class UserDetailsDTO {
     public UserDetailsEntity toUserDetailsEntity() {
         final UserDetailsEntity entity = new UserDetailsEntity();
         entity.setUsername(username);
-        entity.setPassword(password);
+        entity.setPassword(passwordEncoder().encode(password));
         entity.setUserType(userType);
         entity.setRoles(roles);
         return entity;
+    }
+
+    private PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

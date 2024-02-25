@@ -19,7 +19,6 @@
         <module>product-service</module>
         <module>order-service</module>
         <module>seller-service</module>
-        <module>auth-service</module>
         <module>card-service</module>
         <module>address-service</module>
         <module>account-service</module>

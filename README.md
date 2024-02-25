@@ -41,3 +41,19 @@ http://localhost:8080/api/seller/
 http://localhost:8080/eureka/web
 ```
 Note: For now I have implemented it with Eureka Client only on seller service and api gateway service.
+
+## Run specific module with Maven commandline:
+mvn spring-boot:run -pl <module-name>
+```bash
+mvn spring-boot:run -pl discovery-server
+```
+
+
+
+\
+\
+\
+Collections for Future Improvements:\
+https://2much2learn.com/mavengradle-based-multi-module-spring-boot-microservices/
+\
+https://medium.com/zero-equals-false/protect-rest-apis-with-spring-security-reactive-and-jwt-7b209a0510f1

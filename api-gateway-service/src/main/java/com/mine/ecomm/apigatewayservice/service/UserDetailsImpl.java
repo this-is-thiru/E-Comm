@@ -1,4 +1,4 @@
-package com.mine.ecomm.authservice.service;
+package com.mine.ecomm.apigatewayservice.service;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,14 +8,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.mine.ecomm.authservice.entity.UserDetailsEntity;
-
+import com.mine.ecomm.apigatewayservice.entity.UserDetailsEntity;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private String username;
-    private String password;
-    private Collection<GrantedAuthority> authorities;
+    private final String username;
+    private final String password;
+    private final Collection<GrantedAuthority> authorities;
 
     UserDetailsImpl(UserDetailsEntity user) {
         this.username = user.getUsername();
