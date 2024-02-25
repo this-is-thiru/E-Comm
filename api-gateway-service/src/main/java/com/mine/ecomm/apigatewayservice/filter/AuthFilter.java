@@ -5,7 +5,6 @@ import static com.mine.ecomm.apigatewayservice.service.AuthService.JWT_PARSER;
 
 import java.util.Collection;
 
-import io.jsonwebtoken.Jwts;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
