@@ -36,6 +36,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>discovery-server</finalName>
     </build>
 
 </project>
