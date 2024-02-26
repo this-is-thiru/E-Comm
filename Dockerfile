@@ -1,6 +1,15 @@
+#
+# Build stage
+#
+FROM maven:3.9.5-jdk-21 AS build
+COPY . .
+RUN mvn clean package -DskipTests
+
+#
+# Package stage
+#
 FROM openjdk:21-jdk
+COPY --from=build /discovery-server/target/discovery-server.jar app.jar
+# ENV PORT=8080
 EXPOSE 8080
-VOLUME /tmp
-ARG JAR_FILE=target/*.jar
-ADD ./discovery-server/target/discovery-server.jar discovery-server.jar
-ENTRYPOINT ["java","-jar","/spring-security.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
