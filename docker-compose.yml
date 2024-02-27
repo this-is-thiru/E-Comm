@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+  discovery-server:
+    build:
+      context: /discovery-server
+      dockerfile: ./Dockerfile
+    ports:
+      - "8761:8761"
+
+  seller-service:
+    build:
+      context: /seller-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - discovery-server
+
+  api-gateway-service:
+    build:
+      context: /api-gateway-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-server
+
+
+
+
+
+
+
+
+
+
+
+
+
+  address-service:
+    build:
+      context: ../address-service
+      dockerfile: ./Dockerfile
+    ports:
+      - 8085:8085
+
+  mail-service:
+    build:
+      context: ../mail-service
+      dockerfile: ./Dockerfile
+    ports:
+      - 8086:8086
+    environment:
+      - ADDRESS_SERVICE_BASE_PATH=http://address-service:8085/address-service
+    depends_on:
+      - address-service
