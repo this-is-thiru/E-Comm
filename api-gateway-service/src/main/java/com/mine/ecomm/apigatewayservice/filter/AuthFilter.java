@@ -38,7 +38,8 @@ public class AuthFilter implements WebFilter {
         final String header = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         log.info(header);
         if (header == null) {
-          throw new AuthException("Authorization header not found");
+            log.info("request with no auth header.");
+//          throw new AuthException("Authorization header not found");
         }
         final AuthType authType = authType(header);
         final Authentication authentication;
