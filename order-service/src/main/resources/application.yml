@@ -1,5 +1,13 @@
+# To Register as Eureka Client with Eureka Server
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: https://eureka:password@e-comm-j1pe.onrender.com/eureka
+
 server:
-  port: 8086
+  port: 0
 spring:
   application:
     name: order-service
@@ -11,3 +19,29 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# Resilience4j properties
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventory:
+        register-health-indicator: true
+        event-consumer-buffer-size: 10
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true

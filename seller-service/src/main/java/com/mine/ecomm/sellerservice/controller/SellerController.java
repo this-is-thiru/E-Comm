@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mine.ecomm.sellerservice.dto.SellerRateRequest;
 import com.mine.ecomm.sellerservice.dto.SellerRateResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/seller")
 @RequiredArgsConstructor
+@Slf4j
 public class SellerController {
 
     private final SellerService sellerService;
 
-    @GetMapping("/")
+    @GetMapping("/test/t1")
     @ResponseStatus(HttpStatus.OK)
     public String test() {
         return "test seller controller";
@@ -53,6 +55,7 @@ public class SellerController {
     @GetMapping("/sellers-rating")
     @ResponseStatus(HttpStatus.OK)
     public List<SellerRateResponse> getAllSellersRating(final @RequestParam List<String> seller) {
+        log.info("request to get all seller rating: {}", seller);
         return sellerService.getAllSellersRating(seller);
     }
 
