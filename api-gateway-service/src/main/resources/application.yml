@@ -4,7 +4,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     serviceUrl:
-      defaultZone: https://e-comm-j1pe.onrender.com/eureka
+      defaultZone: https://eureka:password@e-comm-j1pe.onrender.com/eureka
 server:
   port: 8080
 
