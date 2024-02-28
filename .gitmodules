@@ -22,3 +22,6 @@
 [submodule "seller-service"]
 	path = seller-service
 	url = https://github.com/this-is-thiru/seller-service.git
+[submodule "wishlist-service"]
+	path = wishlist-service
+	url = https://github.com/this-is-thiru/wishlist-service.git
