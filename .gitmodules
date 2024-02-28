@@ -19,3 +19,6 @@
 [submodule "product-service"]
 	path = product-service
 	url = https://github.com/this-is-thiru/product-service.git
+[submodule "seller-service"]
+	path = seller-service
+	url = https://github.com/this-is-thiru/seller-service.git
