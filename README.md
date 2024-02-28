@@ -1,3 +1,14 @@
+## Setting up the project:
+clone the repository with the following command
+```bash
+git clone --recurse-submodules https://github.com/this-is-thiru/E-Comm.git
+```
+If we want to clone a specific branch we can use the following
+```bash
+git clone --recurse-submodules https://github.com/this-is-thiru/E-Comm.git --branch git
+-submodule
+```
+
 ## Memory Settings for IntelliJ Idea:
 * Menubar -> Help -> Change Memory Settings --- enter 8000
 * Menubar -> Help -> Edit Custom Properties: add these
