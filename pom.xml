@@ -22,7 +22,6 @@
         <module>card-service</module>
         <module>address-service</module>
         <module>account-service</module>
-        <module>discovery-server</module>
         <module>wishlist-server</module>
         <module>api-gateway-service</module>
     </modules>

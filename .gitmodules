@@ -1,0 +1,3 @@
+[submodule "discovery-server"]
+	path = discovery-server
+	url = https://github.com/this-is-thiru/discovery-server.git
