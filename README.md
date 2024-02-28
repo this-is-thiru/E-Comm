@@ -56,3 +56,4 @@ mvn spring-boot:run -pl discovery-server
 Collections for Future Improvements:
 1. https://2much2learn.com/mavengradle-based-multi-module-spring-boot-microservices
 2. https://medium.com/zero-equals-false/protect-rest-apis-with-spring-security-reactive-and-jwt-7b209a0510f1
+3. https://github.com/2much2learn/article_dec_28_mavengradle-based-multi-module-spring-boot-microservices
