@@ -7,9 +7,6 @@
 [submodule "card-service"]
 	path = card-service
 	url = https://github.com/this-is-thiru/card-service.git
-[submodule "address-service"]
-	path = address-service
-	url = https://github.com/this-is-thiru/address-service.git
 [submodule "account-service"]
 	path = account-service
 	url = https://github.com/this-is-thiru/account-service.git
