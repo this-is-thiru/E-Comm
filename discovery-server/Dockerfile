@@ -3,8 +3,8 @@
 #
 FROM maven:3.9.5-eclipse-temurin-21 AS build
 #COPY .. .
-COPY ../pom.xml /tmp/
-COPY .. /tmp/discovery-server/
+COPY ../ /tmp/
+COPY ./ /tmp/discovery-server/
 WORKDIR /tmp/
 RUN mvn clean install -Pdocker
 
