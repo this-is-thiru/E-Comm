@@ -4,3 +4,6 @@
 [submodule "api-gateway-service"]
 	path = api-gateway-service
 	url = https://github.com/this-is-thiru/api-gateway-service.git
+[submodule "card-service"]
+	path = card-service
+	url = https://github.com/this-is-thiru/card-service.git
