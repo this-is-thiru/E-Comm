@@ -25,3 +25,6 @@
 [submodule "address-service"]
 	path = address-service
 	url = https://github.com/this-is-thiru/address-service.git
+[submodule "springboot-parent-pom"]
+	path = springboot-parent-pom
+	url = https://github.com/this-is-thiru/springboot-parent-pom.git
