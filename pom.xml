@@ -22,7 +22,7 @@
         <module>card-service</module>
         <module>address-service</module>
         <module>account-service</module>
-        <module>wishlist-server</module>
+        <module>wishlist-service</module>
         <module>api-gateway-service</module>
         <module>discovery-server</module>
     </modules>
