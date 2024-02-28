@@ -10,6 +10,6 @@ RUN mvn clean package -DskipTests
 #
 FROM openjdk:21-jdk
 COPY --from=build /target/discovery-server.jar discovery-server.jar
-# ENV PORT=8081
+# ENV PORT=8761
 EXPOSE 8761
 ENTRYPOINT ["java","-jar","discovery-server.jar"]

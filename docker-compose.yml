@@ -3,14 +3,14 @@ version: "3"
 services:
   discovery-server:
     build:
-      context: /discovery-server
+      context: discovery-server
       dockerfile: ./Dockerfile
     ports:
       - "8761:8761"
 
   seller-service:
     build:
-      context: /seller-service
+      context: seller-service
       dockerfile: ./Dockerfile
     ports:
       - "8081:8081"
@@ -19,7 +19,7 @@ services:
 
   api-gateway-service:
     build:
-      context: /api-gateway-service
+      context: api-gateway-service
       dockerfile: ./Dockerfile
     ports:
       - "8080:8080"
