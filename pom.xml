@@ -5,86 +5,85 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.mine.ecomm</groupId>
+        <artifactId>springboot-parent-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>./springboot-parent-pom/pom.xml</relativePath> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.mine.ecomm</groupId>
-    <artifactId>E-Comm</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>accumulated-ecomm</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>product-service</module>
-        <module>order-service</module>
-        <module>seller-service</module>
-        <module>card-service</module>
-        <module>address-service</module>
-        <module>account-service</module>
-        <module>wishlist-service</module>
-        <module>api-gateway-service</module>
-        <module>discovery-server</module>
-    </modules>
-
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-cloud.version>2023.0.0</spring-cloud.version>
-        <tests>ut</tests>
-    </properties>
 
     <profiles>
         <profile>
-            <id>ut</id>
-            <properties>
-                <tests>ut</tests>
-            </properties>
+            <id>all-modules</id>
+
+            <modules>
+                <module>product-service</module>
+                <module>order-service</module>
+                <module>seller-service</module>
+                <module>card-service</module>
+                <module>address-service</module>
+                <module>account-service</module>
+                <module>wishlist-service</module>
+                <module>api-gateway-service</module>
+                <module>discovery-server</module>
+            </modules>
         </profile>
         <profile>
-            <id>it</id>
-            <properties>
-                <tests>it</tests>
-            </properties>
+            <id>account-service</id>
+            <modules>
+                <module>account-service</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>address-service</id>
+            <modules>
+                <module>address-service</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>api-gateway</id>
+            <modules>
+                <module>api-gateway-service</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>card-service</id>
+            <modules>
+                <module>card-service</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>discovery-server</id>
+            <modules>
+                <module>discovery-server</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>order-service</id>
+            <modules>
+                <module>order-service</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>product-service</id>
+            <modules>
+                <module>product-service</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>seller-service</id>
+            <modules>
+                <module>seller-service</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>wishlist-service</id>
+            <modules>
+                <module>wishlist-service</module>
+            </modules>
         </profile>
     </profiles>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <argLine>-ea -XX:+EnableDynamicAgentLoading -Xshare:off</argLine>
-                    <groups>${tests}</groups>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

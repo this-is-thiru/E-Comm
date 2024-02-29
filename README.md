@@ -29,19 +29,20 @@ idea.max.intellisense.load.filesize=1500
 
 ## Build project without Tests:
 * #### Note: Demo Unit Tests and Integration Tests has been implemented in Order Service.
-* Go to Maven -> Execute maven goal -> execute the command
+* Go to Maven -> select desired profiles to get activated
+* Execute maven goal -> execute the command
 ```bash
-mvn clean install -DskipTests=true
+mvn clean -s settings.xml install -DskipTests=true
 ```
 * By default, it runs all uts as we have configured the tests property as ut. If we want to run ITs we can run the command as below
 ```
-mvn clean install -P it
+mvn clean -s settings.xml install -P it
 ```
 
 
 ## Test Api Gateway:
 
-1. Run Discovery Server
+1. Run Discovery Server (running online on render for now)
 2. Run Api Gateway
 3. Run Seller Service
 * Try to make api call with following url:
@@ -52,12 +53,6 @@ http://localhost:8080/api/seller/
 http://localhost:8080/eureka/web
 ```
 Note: For now I have implemented it with Eureka Client only on seller service and api gateway service.
-
-## Run specific module with Maven commandline:
-mvn spring-boot:run -pl <module-name>
-```bash
-mvn spring-boot:run -pl discovery-server
-```
 
 
 
@@ -71,7 +66,15 @@ Collections for Future Improvements:
 
 
 
-
+Submodules Sync references:
 ```bash
 git submodule foreach "(git checkout master; git pull; cd ..; git add '$path'; git commit -m 'Submodule Sync')"
 ```
+
+```bash
+git submodule foreach "git fetch && git reset --soft origin/master"   
+```
+
+
+https://stackoverflow.com/questions/1777854/how-can-i-specify-a-branch-tag-when-adding-a-git-submodule/18799234#18799234
+
