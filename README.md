@@ -66,13 +66,9 @@ Collections for Future Improvements:
 
 
 
-Submodules Sync references:
+Submodules Sync with master branch changes (We can run this command every week to get updated changes):
 ```bash
-git submodule foreach "(git checkout master; git pull; cd ..; git add '$path'; git commit -m 'Submodule Sync')"
-```
-
-```bash
-git submodule foreach "git fetch && git reset --soft origin/master"   
+git submodule foreach "(git pull origin master; cd ..;)"; git add .; git commit -m "Submodule sync with master branch"; git push
 ```
 
 
