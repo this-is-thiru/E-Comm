@@ -1,0 +1,30 @@
+[submodule "discovery-server"]
+	path = discovery-server
+	url = https://github.com/this-is-thiru/discovery-server.git
+[submodule "api-gateway-service"]
+	path = api-gateway-service
+	url = https://github.com/this-is-thiru/api-gateway-service.git
+[submodule "card-service"]
+	path = card-service
+	url = https://github.com/this-is-thiru/card-service.git
+[submodule "account-service"]
+	path = account-service
+	url = https://github.com/this-is-thiru/account-service.git
+[submodule "order-service"]
+	path = order-service
+	url = https://github.com/this-is-thiru/order-service.git
+[submodule "product-service"]
+	path = product-service
+	url = https://github.com/this-is-thiru/product-service.git
+[submodule "seller-service"]
+	path = seller-service
+	url = https://github.com/this-is-thiru/seller-service.git
+[submodule "wishlist-service"]
+	path = wishlist-service
+	url = https://github.com/this-is-thiru/wishlist-service.git
+[submodule "address-service"]
+	path = address-service
+	url = https://github.com/this-is-thiru/address-service.git
+[submodule "springboot-parent-pom"]
+	path = springboot-parent-pom
+	url = https://github.com/this-is-thiru/springboot-parent-pom.git
