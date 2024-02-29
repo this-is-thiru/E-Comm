@@ -71,6 +71,10 @@ Submodules Sync with master branch changes (We can run this command every week t
 git submodule foreach "(git pull origin master; cd ..;)"; git add .; git commit -m "Submodule sync with master branch"; git push
 ```
 
+This script will raise the empty commit for each submodule. This will help the re trigger the build in production.
+```bash
+git submodule foreach "(git checkout -b temp; git pull origin master; git commit -m 'Empty commit for test'; git push; cd ..;)";
+```
 
 https://stackoverflow.com/questions/1777854/how-can-i-specify-a-branch-tag-when-adding-a-git-submodule/18799234#18799234
 
