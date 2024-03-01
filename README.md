@@ -5,8 +5,7 @@ git clone --recurse-submodules https://github.com/this-is-thiru/E-Comm.git
 ```
 If we want to clone a specific branch we can use the following
 ```bash
-git clone --recurse-submodules https://github.com/this-is-thiru/E-Comm.git --branch git
--submodule
+git clone --recurse-submodules https://github.com/this-is-thiru/E-Comm.git --branch git-submodule
 ```
 
 ## Memory Settings for IntelliJ Idea:
@@ -76,5 +75,9 @@ This script will raise the empty commit for each submodule. This will help the r
 git submodule foreach "(git checkout -b temp; git pull origin master; git commit -m 'Empty commit for test'; git push; cd ..;)";
 ```
 
+Commit changes to all submodules at the same time
+```bash
+git submodule foreach "(git switch master; git add '.'; git commit -m '<message>'; git push origin master; cd ..)"
+```
 https://stackoverflow.com/questions/1777854/how-can-i-specify-a-branch-tag-when-adding-a-git-submodule/18799234#18799234
 
