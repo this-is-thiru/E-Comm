@@ -1,7 +1,4 @@
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+<settings>
 
     <activeProfiles>
         <activeProfile>github</activeProfile>
@@ -26,7 +23,7 @@
         <server>
             <id>github</id>
             <username>this-is-thiru</username>
-            <password>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</password>
+            <password>-- To find the token go through first Note in the README.md --</password>
         </server>
     </servers>
 </settings>

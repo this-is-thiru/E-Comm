@@ -7,6 +7,8 @@ If we want to clone a specific branch we can use the following
 ```bash
 git clone --recurse-submodules https://github.com/this-is-thiru/E-Comm.git --branch git-submodule
 ```
+### Note:
+For better understanding of the setup of this project go through this [doc](https://onedrive.live.com/personal/4fb5a8d7e4d1ea59/_layouts/15/doc2.aspx?resid=64f229a5-6716-4438-b374-827559f3563c&cid=4fb5a8d7e4d1ea59&ct=1713549290218&wdOrigin=OFFICECOM-WEB.START.EDGEWORTH&wdPreviousSessionSrc=HarmonyWeb&wdPreviousSession=110d2918-5730-4577-bb27-047664beb6bf)
 
 ## Memory Settings for IntelliJ Idea:
 * Menubar -> Help -> Change Memory Settings --- enter 8000
