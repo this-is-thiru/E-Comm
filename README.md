@@ -10,13 +10,19 @@ git clone --recurse-submodules https://github.com/this-is-thiru/E-Comm.git --bra
 ### Note:
 For better understanding of the setup of this project go through this [doc](https://onedrive.live.com/personal/4fb5a8d7e4d1ea59/_layouts/15/doc2.aspx?resid=64f229a5-6716-4438-b374-827559f3563c&cid=4fb5a8d7e4d1ea59&ct=1713549290218&wdOrigin=OFFICECOM-WEB.START.EDGEWORTH&wdPreviousSessionSrc=HarmonyWeb&wdPreviousSession=110d2918-5730-4577-bb27-047664beb6bf)
 
-## Memory Settings for IntelliJ Idea:
+## Intellij Settings:
+### 1. Memory Settings for IntelliJ Idea:
 * Menubar -> Help -> Change Memory Settings --- enter 8000
 * Menubar -> Help -> Edit Custom Properties: add these
 ```
 idea.max.content.load.filesize=10000
 idea.max.intellisense.load.filesize=1500
 ```
+### 2. Import Settings for IntelliJ Idea:
+* Ctrl + Alt + S (to open settings) ->  Editor -> Code Style -> Java -> 
+* Use single class import -> enabled
+* Class count to use import with '*': 10
+* Names count to use static import with '*': 10
 
 ## Plugins to add:
 * ###  Eclipse Code Formatter:
@@ -83,3 +89,6 @@ git submodule foreach "(git switch master; git add '.'; git commit -m '<message>
 ```
 https://stackoverflow.com/questions/1777854/how-can-i-specify-a-branch-tag-when-adding-a-git-submodule/18799234#18799234
 
+
+# Note: 
+1. Swagger code gen implementation has done in "account-service"
